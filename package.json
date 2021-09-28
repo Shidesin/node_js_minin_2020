@@ -1,0 +1,13 @@
+{
+  "name": "node_js_minin_2020",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
