@@ -1,76 +1,31 @@
-const http = require('http')
-const fs = require('fs');
-const path = require('path');
+const express = require('express');
+const exphbs  = require('express-handlebars');
 
-const server = http.createServer((req, res) => {
-    if (req.method === 'GET') {
+const homeRoute = require('./routes/home.route')
+const addCourseRoutes = require('./routes/add.route')
+const coursesRoute = require('./routes/courses.route')
+const cardRoute = require('./routes/card.route')
 
-        res.writeHead(200, {
-            'Content-Type': 'text/html',
-        })
+const app = express();
 
-        if (req.url === '/') {
-            fs.readFile(
-                path.join(__dirname, 'views', 'index.html'),
-                'utf-8',
-                (err, content) => {
-                    if (err) {
-                        throw err
-                    }
-                    res.end(content)
-                })
-        }
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    extname: 'hbs'
+})
+app.engine('hbs', hbs.engine)
+app.set('view engine', 'hbs')
+app.set('views', 'views')
 
-        if (req.url === '/about') {
-            fs.readFile(
-                path.join(__dirname, 'views', 'about.html'),
-                'utf-8',
-                (err, content) => {
-                    if (err) {
-                        throw err
-                    }
-                    res.end(content)
-                })
-        }
-
-        if (req.url === '/api/users'){
-              res.writeHead(200, {
-                  "Content-Type": 'text/json'
-              })
-
-            const users = [
-                {name: 'user1', age: 11},
-                {name: 'user2', age: 21}
-            ]
-
-            res.end(JSON.stringify(users))
-        }
+app.use(express.static('public'))
+app.use(express.urlencoded({extended: true}))
+app.use('/',homeRoute)
+app.use('/add',addCourseRoutes)
+app.use('/courses',coursesRoute)
+app.use('/card', cardRoute)
 
 
-    }
-    if (req.method === 'POST') {
-
-        res.writeHead(200, {
-            'Content-Type': 'text/html; charset=utf-8',
-        })
-
-        let body = []
-
-        req.on('data', (data) => {
-            body.push(Buffer.from(data))
-        })
-        req.on('end', () => {
-            const [_, message] = body.toLocaleString().split('=')
-
-            res.end(`
-            <h1>You message:  ${message}</h1> 
-        `)
-        })
-
-
-    }
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+    console.log(`Server running in port: ${PORT}`)
 })
 
-server.listen(3000, () => {
-    console.log('server listening on')
-})  
