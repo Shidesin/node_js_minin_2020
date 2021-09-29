@@ -12,12 +12,18 @@ router.post('/add', async (req, res) => {
 
 router.get('/', async (req, res) => {
     const card = await Card.fetch()
-    res.render('card',{
+    res.render('card', {
         title: 'Сard',
         isCard: true,
         courses: card.courses,
         price: card.price
     })
+})
+
+router.delete('/remove/:id', async (req, res) => {
+    const card = await Card.remove(req.params.id)
+    res.status(200).json(card)
+
 })
 
 module.exports = router
