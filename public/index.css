@@ -31,3 +31,7 @@
       align-items: center;
       justify-content: space-between;
 }
+
+.remove-btn {
+      padding-top: 2em;
+}
