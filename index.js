@@ -17,13 +17,20 @@ const cardRoute = require('./routes/card.route')
 const ordersRoute = require('./routes/orders.route')
 const authRouter = require('./routes/auth.route')
 
+const keys = require('./keys')
+//create new branch
+
 const app = express();
 const PORT = process.env.PORT || 3000
-const MONGODB_URI = 'mongodb://localhost:27017/node_js_minin'
+// const MONGODB_URI = 'mongodb://localhost:27017/node_js_minin'
+
+const createNewFuncFromTest = () => {
+    return 'Some code'
+}
 
 const store = new MongoStore({
     collection: 'sessions',
-    uri: MONGODB_URI
+    uri: keys.MONGODB_URI
 })
 
 const hbs = exphbs.create({
@@ -38,7 +45,7 @@ app.set('views', 'views')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
-    secret: 'asd',
+    secret: keys.secretKey,
     resave: false,
     saveUninitialized: false ,
     store
@@ -60,7 +67,7 @@ const start = async () => {
     try {
         // const url = 'mongodb+srv://alez:l7SEUZO8giwmr4QN@cluster0.d5fqe.mongodb.net/shop'
         
-        await mongoose.connect(MONGODB_URI,{
+        await mongoose.connect(keys.MONGODB_URI,{
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
