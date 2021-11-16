@@ -24,10 +24,6 @@ const app = express();
 const PORT = process.env.PORT || 3000
 // const MONGODB_URI = 'mongodb://localhost:27017/node_js_minin'
 
-const createNewFuncFromTest = () => {
-    return 'Some code'
-}
-
 const store = new MongoStore({
     collection: 'sessions',
     uri: keys.MONGODB_URI
